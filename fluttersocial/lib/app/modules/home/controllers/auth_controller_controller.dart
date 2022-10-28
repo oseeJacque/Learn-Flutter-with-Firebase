@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttersocial/app/data/constants/firebase_constant.dart';
@@ -7,11 +8,13 @@ import 'package:fluttersocial/app/modules/home/views/home_view.dart';
 import 'package:fluttersocial/app/modules/home/views/views/login_view.dart';
 import 'package:get/get.dart';
 
+import '../../../data/utils/constants.dart';
+
 class AuthControllerController extends GetxController {
   //TODO: Implement AuthControllerController
   static AuthControllerController instance = Get.find();
   late Rx<User?> firebaseUser;
-
+  final fire_user = fireStoreInstance.collection(memberRef);
   @override
   void onInit() {
     super.onInit();
@@ -27,34 +30,55 @@ class AuthControllerController extends GetxController {
 
   _setInitializeScreem(User? user) {
     if (user == null) {
-      Get.offAll(() => const HomeView());
+      Get.offAll(() => const LoginView());
     } else {
       //When user will be ampty
-      Get.offAll(() => const LoginView());
+      Get.offAll(() => const HomeView());
     }
   }
 
-  void register(String mail, String password) {
+  Future<bool> register(String mail, String password,
+      {name = "SOKE", surname = "Osée"}) async {
     try {
-      auth.signInWithEmailAndPassword(email: mail, password: password);
+      final userCredential = await auth.createUserWithEmailAndPassword(
+          email: mail, password: password);
+      final User? user = userCredential.user;
+      Map<String, dynamic> memberMap = {
+        nameKey: name,
+        surnameKey: surname,
+        imageUrlKey: "",
+        followersKey: [user!.uid],
+        followingKey: [],
+        uidKey: user.uid
+      };
+      addUserToFireBase(memberMap);
+      if (userCredential.additionalUserInfo!.isNewUser) return true;
+      return false;
     }
     //Here we can return or display a dialogue to show the exeption of firebase
     //The exception can be "No valide mail or password"
     on FirebaseException catch (e) {
-      print(e.toString());
+      snackbarInfo("Error ", e.message.toString());
+      return false;
     } catch (e) {
       print(e.toString());
+      return false;
     }
   }
 
-  void logIn(String mail, String password) {
+  Future logIn(String mail, String password) async {
     try {
-      auth.signInWithEmailAndPassword(email: mail, password: password);
+      final response = await auth.signInWithEmailAndPassword(
+          email: mail, password: password);
+      if (response.user!.emailVerified) {
+        snackbarInfo("Connexion", response.additionalUserInfo.toString());
+      } else {
+        snackbarInfo("Erreur", "Vous ne disposez pas de compte");
+      }
     } on FirebaseException catch (e) {
-      print(e.toString());
-    } catch (e) {
-      print(e.toString());
-    }
+      snackbarInfo("Erreur", e.message.toString());
+      print(e.message.toString());
+    } catch (e) {}
   }
 
   void logOut() {
@@ -72,12 +96,15 @@ class AuthControllerController extends GetxController {
     super.onClose();
   }
 
+  addUserToFireBase(Map<String, dynamic> map) {
+    fire_user.doc(map[uidKey]).set(map);
+  }
+
   snackbarInfo(String title, String message) {
-    Get.snackbar(title, message,
-        snackPosition: SnackPosition.BOTTOM,
+    return Get.snackbar(title, message,
+        snackPosition: SnackPosition.TOP,
         colorText: Colors.black,
-        backgroundColor: Colors.yellow, 
-        animationDuration: const Duration(microseconds: 1000)
-        );
+        backgroundColor: Colors.red,
+        animationDuration: const Duration(milliseconds: 4000));
   }
 }
