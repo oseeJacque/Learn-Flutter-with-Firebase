@@ -33,7 +33,9 @@ class AuthControllerController extends GetxController {
       Get.offAll(() => const LoginView());
     } else {
       //When user will be ampty
-      Get.offAll(() => const HomeView());
+      Get.offAll(() => HomeView(
+            memberUid: firebaseUser.value!.uid,
+          ));
     }
   }
 

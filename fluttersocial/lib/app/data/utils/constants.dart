@@ -20,17 +20,20 @@ String memberRef = "member";
 String typeKey = "type";
 
 String like = "Like";
-String follow= "Follow";
+String follow = "Follow";
 String comment = "Comment";
 // Icons
 
-Icon homeIcon = Icon(Icons.house_rounded);
-Icon profileIcon = Icon(Icons.person);
-Icon notifIcon = Icon(Icons.notifications);
-Icon writePost = Icon(Icons.border_color);
-Icon friendsIcon = Icon(Icons.group);
-Icon cameraIcon = Icon(Icons.camera_alt_rounded);
-Icon libraryIcon = Icon(Icons.photo_library_outlined);
-Icon likeIcon = Icon(Icons.favorite);
-Icon unlikeIcon = Icon(Icons.favorite_border);
-Icon commentIcon = Icon(Icons.message_rounded);
+Icon homeIcon = Icon(
+  Icons.house_rounded,
+  size: 30,
+);
+Icon profileIcon = Icon(Icons.person, size: 30);
+Icon notifIcon = Icon(Icons.notifications, size: 30);
+Icon writePost = Icon(Icons.border_color, size: 30);
+Icon friendsIcon = Icon(Icons.group, size: 30);
+Icon cameraIcon = Icon(Icons.camera_alt_rounded, size: 30);
+Icon libraryIcon = Icon(Icons.photo_library_outlined, size: 30);
+Icon likeIcon = Icon(Icons.favorite, size: 30);
+Icon unlikeIcon = Icon(Icons.favorite_border, size: 30);
+Icon commentIcon = Icon(Icons.message_rounded, size: 30);

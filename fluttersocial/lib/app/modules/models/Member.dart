@@ -3,40 +3,31 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../data/utils/constants.dart';
 
 class Member {
-  final String uid;
-  final String name;
-  final String surname;
-  final String imageUrl;
-  final List<dynamic> followers;
-  final List<dynamic> following;
-  //final DocumentReference ref;
-  final String documentId;
-  final String description;
+  late String uid = "-1";
+  late String name = " ";
+  late String surname = " ";
+  late String imageUrl = "";
+  late List<dynamic> followers = [""];
+  late List<dynamic> following = [" "];
+  late DocumentReference ref;
+  late String documentId = "";
+  late String description = " ";
 
-  Member(DocumentSnapshot snapshot,
-      {this.uid="-1",
-      this.name="",
-      this.surname="",
-      this.imageUrl="",
-      this.followers=const [""],
-      this.following=const [],
-      //this.ref=,
-      this.documentId="",
-      this.description=""
-      }) {
-    print(snapshot);
-    // ref = snapshot.reference;
-    // uid = snapshot.id;
-    // Map<String, dynamic> datas = snapshot.data();
-    // name = datas[nameKey];
-    // surname = datas[surnameKey];
-    // imageUrl = datas[imageUrlKey];
-    // followers = datas[followersKey];
-    // following = datas[followingKey];
-    // description = datas[descriptionKey];
+  Member(
+    DocumentSnapshot<Map<String, dynamic>> doc,
+  ) {
+    ref = doc.reference;
+    uid = doc.id;
+    Map<String, dynamic> datas = toMap(doc.data());
+    name = datas[nameKey];
+    surname = datas[surnameKey];
+    imageUrl = datas[imageUrlKey];
+    followers = datas[followersKey];
+    following = datas[followingKey];
+    description = datas[descriptionKey];
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap(Object? data) {
     return {
       uidKey: uid,
       nameKey: name,

@@ -11,9 +11,9 @@ class StringData {
   static String creerCompte = "Créer un compte";
   static String crer = "Enregistrer";
   static String connect = "Connexion";
-  // static String v = "";
-  // static String v = "";
-  // static String v = "";
+  static String newPost = "Nouvelle Pubication";
+  static String writeSomething = "Ecrire quelques choses ....";
+  static String noImage= "Aucune image sélectionnée";
   // static String v = "";
   // static String v = "";
   // static String v = "";

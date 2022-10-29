@@ -17,6 +17,6 @@ class MyGradient extends BoxDecoration {
       end: (horizontal) ? endHorizontal : endVertical,
       tileMode: TileMode.clamp
     ),
-    borderRadius: BorderRadius.all(Radius.circular(radius))
+    borderRadius: BorderRadius.only(topRight:Radius.circular(radius),topLeft:Radius.circular(radius) )
   );
 }
